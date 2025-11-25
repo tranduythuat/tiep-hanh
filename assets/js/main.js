@@ -77,4 +77,92 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const btn = document.getElementById('player-btn');
   btn.addEventListener('click', toggleMusic);
+
+  const formNhaGai = document.forms["rsvpFormNhaGai"];
+  const formNhaTrai21 = document.forms["rsvpFormNhaTrai21"];
+  const formNhaTrai22 = document.forms["rsvpFormNhaTrai22"];
+  if (formNhaGai) {
+    formNhaGai.addEventListener("submit", (e) => handleFormSubmit(e, "nhagai"));
+  }
+  if (formNhaTrai21) {
+    formNhaTrai21.addEventListener("submit", (e) => handleFormSubmit(e, "nhatrai21"));
+  }
+  if (formNhaTrai22) {
+    formNhaTrai22.addEventListener("submit", (e) => handleFormSubmit(e, "nhatrai22"));
+  }
 });
+
+
+async function handleFormSubmit(e, code) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+  console.log("🚀 ~ handleFormSubmit ~ data:", data);
+
+  const {
+    name: name,
+    attendance: attendance,
+    phone: phone,
+    wish: wish,
+  } = data;
+  console.log("🚀 ~ handleFormSubmit 2~ data:", data);
+
+  // Thông báo khi bắt đầu gửi
+  Swal.fire({
+    title: 'Đang gửi ...',
+    text: "Vui lòng chờ trong giây lát",
+    icon: "info",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  const SHEET_ENDPOINTS = {
+    nhagai: "https://script.google.com/macros/s/AKfycbypscslroxWVRPa1c0Vfg-WmwndGFH-91ND9JWfWG6u4rZ_nO0p3KX-RWg-ZawC2ZY/exec?sheet=nha-gai",
+    nhatrai21: "https://script.google.com/macros/s/AKfycbypscslroxWVRPa1c0Vfg-WmwndGFH-91ND9JWfWG6u4rZ_nO0p3KX-RWg-ZawC2ZY/exec?sheet=nha-trai-21",
+    nhatrai22: "https://script.google.com/macros/s/AKfycbypscslroxWVRPa1c0Vfg-WmwndGFH-91ND9JWfWG6u4rZ_nO0p3KX-RWg-ZawC2ZY/exec?sheet=nha-trai-22"
+  };
+
+  const sheetURL = SHEET_ENDPOINTS[code];
+  
+  try {
+    const res = await fetch(sheetURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        name,
+        attendance,
+        phone,
+        wish
+      }),
+    });
+
+    const result = await res.json().catch(() => ({}));
+    console.log("Server response:", result);
+
+    form.reset();
+
+    // Thông báo thành công
+    Swal.fire({
+      title: "Thành công!",
+      text: "Cảm ơn bạn đã gửi phản hồi, thông tin đã được gửi đến dâu rể rồi nha",
+      icon: "success",
+      confirmButtonText: "OK",
+      confirmButtonColor: "#000",
+    });
+  } catch (error) {
+    console.error("Error:", error);
+
+    // Thông báo lỗi
+    Swal.fire({
+      title: "Lỗi!",
+      text: "OPPS! Đã xảy ra lỗi: " + error.message,
+      icon: "error",
+      confirmButtonText: "Thử lại",
+      confirmButtonColor: "#000",
+    });
+  }
+}
