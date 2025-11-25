@@ -74,7 +74,6 @@ section {
   border: none;
   outline: none;
   z-index: 9999;
-  border: 1px solid var(--text-title-color);
 }
 
 .player #iconSvg {
@@ -85,6 +84,27 @@ section {
 
 .spin {
   animation: spin 4s linear infinite;
+}
+
+.music-label {
+  position: fixed;
+  bottom: 21px;
+  right: 4.5%;
+  width: 140px;
+  aspect-ratio: 140/36;
+  background-color: #a23622;
+  z-index: 999;
+  font-family: "1FTVBlushingRose", sans-serif;
+  font-size: 13px;
+  color: white;
+  display: flex;
+  text-align: right;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1.5% 2% 1%;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border: 1px solid white;
 }
 
 /* Định nghĩa hoạt ảnh xoay */
@@ -102,6 +122,11 @@ section {
   }
   .player {
     max-width: 11vw;
+    min-width: 40px;
+  }
+  .music-label {
+    width: 28vw;
+    font-size: 2.6vw;
   }
 }
 header {
