@@ -77,6 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const btn = document.getElementById('player-btn');
   btn.addEventListener('click', toggleMusic);
+  const labelMusic = document.getElementById('music-label');
+  labelMusic.addEventListener('click', toggleMusic);
 
   const formNhaGai = document.forms["rsvpFormNhaGai"];
   const formNhaTrai21 = document.forms["rsvpFormNhaTrai21"];
