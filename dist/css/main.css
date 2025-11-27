@@ -105,6 +105,10 @@ section {
   border: 1px solid white;
 }
 
+.spin {
+  animation: spin 4s linear infinite;
+}
+
 /* Định nghĩa hoạt ảnh xoay */
 @keyframes spin {
   0% {

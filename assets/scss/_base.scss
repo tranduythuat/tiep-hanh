@@ -75,6 +75,10 @@ section {
     }
 }
 
+.spin {
+    animation: spin 4s linear infinite;
+}
+
 /* Định nghĩa hoạt ảnh xoay */
 @keyframes spin {
     0% {
